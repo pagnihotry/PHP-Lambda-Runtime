@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#go into the source directory
+cd $LAMBDA_TASK_ROOT
+
+#execute the runtime
+/opt/php /opt/runtime.php
