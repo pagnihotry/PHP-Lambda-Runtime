@@ -13,7 +13,7 @@ Files:
 
 ## Handler
 
-This runtime expects the function handler in AWS Lambda configuration in the form `filename.handler`. This means that if you configure AWS lambda's handler field as `filename.handler` the runtime layer will look for a file `fielname.php` in your function code and execute the function `handler` passing in the event payload as the fisrt argument. Refer to file `function/Function.php` in this repositiory for example.
+This runtime expects the function handler in AWS Lambda configuration in the form `filename.handler`. This means that if you configure AWS lambda's handler field as `filename.handler` the runtime layer will look for a file `fielname.php` in your function code and execute the function `handler` passing in the event payload as the first argument. Refer to file `function/Function.php` in this repositiory for example.
 
 # Configuration
 
