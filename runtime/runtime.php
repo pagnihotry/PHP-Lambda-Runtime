@@ -206,12 +206,33 @@ while (true) {
 	//Handler is of format Filename.function
 	//Capture stdout
 	ob_start();
-	//Execute handler
-	$functionReturn = $handlerFunction($eventPayload);
-	$out = ob_get_clean();
-	$lambdaRuntime->addToResponse($out.$functionReturn);
-	//Report result
-	$lambdaRuntime->flushResponse();
+	//try catch to capture any exceptions that may get thrown by the handler
+	try{
+		//Execute handler
+		$functionReturn = $handlerFunction($eventPayload);
+		$out = ob_get_clean();
+		$lambdaRuntime->addToResponse($functionReturn);
+		$lambdaRuntime->addToResponse($out);
+		//Report result
+		$lambdaRuntime->flushResponse();
+	} catch (Exception $e) {
+		//capture the output generated till the error is caught
+		$out = ob_get_clean();
+		//get the exception message
+		$message = $e->getMessage();
+		//construct the error message
+		$lambdaRuntime->addToResponse(" exceptionMessage: $message");
+		if($out !== "") {
+			$lambdaRuntime->addToResponse(" stdout: $out");
+		}
+		//get the exception type
+		$errorType = get_class($e);
+		//report error to lambda
+		$lambdaRuntime->reportError($errorType, trim($lambdaRuntime->getResponse()));
+
+		//reset the response string
+		$lambdaRuntime->resetResponse();
+	}
 
 }
 
